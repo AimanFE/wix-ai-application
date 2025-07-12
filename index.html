@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Infrastructure Vision | Aiman Younis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #fff, #e0e7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 300;
+        }
+
+        .ai-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 3rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: slideIn 1s ease forwards;
+            animation-delay: 0.3s;
+        }
+
+        .ai-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .letter-content {
+            color: white;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .letter-content h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #ffd700;
+        }
+
+        .interactive-demo {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .demo-title {
+            font-size: 1.5rem;
+            color: #ffd700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .input-group {
+            margin: 1rem 0;
+        }
+
+        .input-group label {
+            display: block;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-group select option {
+            background: #333;
+            color: white;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
+        }
+
+        .generate-btn {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #333;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 1rem 0;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .ai-output {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid #ffd700;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            color: white;
+            font-family: 'Courier New', monospace;
+        }
+
+        .experience-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .experience-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .experience-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
+        }
+
+        .experience-item h3 {
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+        }
+
+        .floating-icons {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .floating-icon {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.1);
+            font-size: 2rem;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 3rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-style: italic;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .typing-indicator {
+            display: none;
+            color: #ffd700;
+        }
+
+        .typing-indicator::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-icons">
+        <div class="floating-icon" style="top: 10%; left: 10%; animation-delay: 0s;">🤖</div>
+        <div class="floating-icon" style="top: 20%; right: 15%; animation-delay: 1s;">⚡</div>
+        <div class="floating-icon" style="top: 60%; left: 5%; animation-delay: 2s;">🚀</div>
+        <div class="floating-icon" style="top: 70%; right: 10%; animation-delay: 3s;">💡</div>
+        <div class="floating-icon" style="top: 40%; right: 20%; animation-delay: 4s;">🔧</div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>AI Infrastructure Vision</h1>
+            <p>A Letter to the Wix AI Infrastructure Team</p>
+        </div>
+
+        <div class="ai-card">
+            <div class="letter-content">
+                <h2>Dear Wix AI Infrastructure Team,</h2>
+                
+                <p>Instead of a traditional cover letter, I built this interactive demonstration to show how I think about AI infrastructure. After 5+ years building scalable solutions for millions of users at Amdocs, I'm excited about the possibility of channeling that experience into accelerating developer velocity through AI.</p>
+
+                <div class="interactive-demo">
+                    <div class="demo-title">
+                        🎯 AI Tool Generator Concept
+                    </div>
+                    <p style="color: rgba(255,255,255,0.8); margin-bottom: 1rem;">Here's a mini-example of how I envision AI tools that adapt to developer needs:</p>
+                    
+                    <div class="input-group">
+                        <label>Developer Challenge:</label>
+                        <select id="challenge">
+                            <option>Code Review Bottlenecks</option>
+                            <option>API Documentation Gaps</option>
+                            <option>Testing Coverage Issues</option>
+                            <option>Deployment Process Friction</option>
+                            <option>Cross-team Communication</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Team Size:</label>
+                        <input type="number" id="teamSize" placeholder="e.g., 8" min="1" max="50">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Current Tech Stack:</label>
+                        <input type="text" id="techStack" placeholder="e.g., React, Node.js, Kubernetes">
+                    </div>
+
+                    <button class="generate-btn" onclick="generateSolution()">Generate AI Solution Concept 🚀</button>
+
+                    <div class="ai-output" id="output">
+                        <span style="color: rgba(255,255,255,0.5);">AI-generated solution will appear here...</span>
+                    </div>
+                    <div class="typing-indicator" id="typing">Generating solution</div>
+                </div>
+
+                <h2>Why I'm Passionate About This Role:</h2>
+
+                <div class="experience-grid">
+                    <div class="experience-item">
+                        <h3>🔄 Integration Expertise</h3>
+                        <p>Led complex system integrations at Amdocs (billing, ERP, charging platforms) - exactly the kind of thinking needed to integrate AI tools like n8n into Wix's ecosystem.</p>
+                    </div>
+                    
+                    <div class="experience-item">
+                        <h3>⚡ Velocity Focus</h3>
+                        <p>As a Scrum Master, I've obsessed over team velocity. I understand the bottlenecks developers face and how the right tools can 10x productivity.</p>
+                    </div>
+                    
+                    <div class="experience-item">
+                        <h3>🎯 End-to-End Ownership</h3>
+                        <p>Delivered an 18-month CRM project serving 2M+ users from ideation to production. I thrive on owning solutions completely.</p>
+                    </div>
+                    
+                    <div class="experience-item">
+                        <h3>🚀 Innovation Mindset</h3>
+                        <p>Recognized company-wide for "extra mile" performance. I love experimenting, failing fast, and iterating toward breakthrough solutions.</p>
+                    </div>
+                </div>
+
+                <p>I'm particularly excited about working in the "unknown fast-changing AI landscape" you mentioned. My experience with rapid telecom technology changes has taught me to embrace uncertainty as an opportunity for innovation.</p>
+
+                <p>I'd love to discuss how we can build AI infrastructure that doesn't just automate tasks, but fundamentally transforms how developers at Wix create, collaborate, and ship products.</p>
+
+                <div class="signature">
+                    <p>Ready to make AI tools that developers actually love,</p>
+                    <p><strong>Aiman Younis</strong></p>
+                    <p>📧 Aiman.Younis4@gmail.com | 📱 +(972) 52-7979498</p>
+                    <p>🔗 <a href="https://github.com/AimanYounis" style="color: #ffd700;">github.com/AimanYounis</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const solutions = {
+            "Code Review Bottlenecks": [
+                "AI-powered code review assistant that learns from senior developers' feedback patterns",
+                "Intelligent PR prioritization system based on impact analysis and team capacity",
+                "Automated code quality gates with contextual suggestions for improvement"
+            ],
+            "API Documentation Gaps": [
+                "Auto-generating API docs from code comments and usage patterns",
+                "Interactive API explorer with AI-generated examples and use cases",
+                "Documentation health monitoring with automated gap detection"
+            ],
+            "Testing Coverage Issues": [
+                "AI test case generator based on code changes and user behavior data",
+                "Smart test prioritization to focus on high-risk areas",
+                "Automated test maintenance that updates tests when APIs change"
+            ],
+            "Deployment Process Friction": [
+                "Intelligent deployment pipeline that adapts based on change complexity",
+                "Predictive rollback system that monitors deployment health in real-time",
+                "Environment-specific configuration validator with AI-powered recommendations"
+            ],
+            "Cross-team Communication": [
+                "AI meeting summarizer that extracts action items and technical decisions",
+                "Smart notification system that routes technical discussions to relevant experts",
+                "Automated status updates based on code commits and deployment activities"
+            ]
+        };
+
+        function generateSolution() {
+            const challenge = document.getElementById('challenge').value;
+            const teamSize = document.getElementById('teamSize').value;
+            const techStack = document.getElementById('techStack').value;
+            const output = document.getElementById('output');
+            const typing = document.getElementById('typing');
+            
+            if (!teamSize || !techStack) {
+                output.innerHTML = '<span style="color: #ff6b6b;">Please fill in team size and tech stack to generate a personalized solution!</span>';
+                return;
+            }
+
+            // Show typing indicator
+            output.style.display = 'none';
+            typing.style.display = 'block';
+
+            setTimeout(() => {
+                const baseSolution = solutions[challenge][Math.floor(Math.random() * solutions[challenge].length)];
+                const teamContext = parseInt(teamSize) > 10 ? "enterprise-scale" : "agile team";
+                const techIntegration = techStack.toLowerCase().includes('react') ? 
+                    "with React DevTools integration" : 
+                    `optimized for ${techStack} workflows`;
+
+                const customSolution = `💡 Solution: ${baseSolution} ${techIntegration}. 
+                
+🎯 For your ${teamContext} of ${teamSize} developers, this would:
+• Reduce ${challenge.toLowerCase()} by ~60% based on similar implementations
+• Integrate seamlessly with your ${techStack} stack
+• Scale automatically as your team grows
+• Provide actionable insights through AI-powered analytics
+
+🚀 Implementation: Start with a 2-week MVP, gather developer feedback, and iterate based on actual usage patterns.`;
+
+                typing.style.display = 'none';
+                output.style.display = 'flex';
+                output.innerHTML = customSolution;
+            }, 2000);
+        }
+
+        // Add some dynamic floating animation
+        document.querySelectorAll('.floating-icon').forEach((icon, index) => {
+            icon.style.animationDelay = `${index * 0.5}s`;
+        });
+    </script>
+</body>
+</html>
